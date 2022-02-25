@@ -1,0 +1,36 @@
+CUDA_VISIBLE_DEVICES=6,7 python run_pre_training.py \
+    --model_name_or_path philschmid/bart-base-samsum \
+    --do_eval \
+    --do_predict \
+    --do_train \
+    --save_total_limit=2 \
+    --evaluation_strategy epoch \
+    --logging_strategy epoch \
+    --cache_dir ./cache \
+    --output_dir ./tmp/tst-pre-training \
+    --logging_dir ./logs \
+    --per_device_train_batch_size=2 \
+    --per_device_eval_batch_size=2 \
+    --gradient_accumulation_steps=2 \
+    --overwrite_output_dir \
+    --learning_rate=3e-5 \
+    --max_source_length 800 \
+    --max_target_length 100 \
+    --label_smoothing_factor 0.1 \
+    --lr_scheduler polynomial \
+    --weight_decay 0.01 --warmup_ratio 0.02 --num_train_epochs 50 \
+    --max_grad_norm 0.1 \
+    --sortish_sampler \
+    --predict_with_generate \
+    --seed 42 \
+    --metric_for_best_model loss \
+    --load_best_model_at_end \
+    --train_file ./data/train.csv \
+    --validation_file ./data/val.csv \
+    --test_file ./data/test.csv \
+    --text_column text \
+    --summary_column text \
+    --noise_type pre-training \
+    --dropout 0.1
+    
+# 
